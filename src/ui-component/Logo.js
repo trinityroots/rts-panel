@@ -14,7 +14,7 @@ import { useTheme } from '@mui/material/styles';
 const Logo = () => {
     const theme = useTheme();
 
-    const logo = "http://localhost:3000/rts-panel/rts-panel.png"
+    const logo = "https://trinityroots.github.io/rts-panel/rts-panel.png"
 
     return (
         /**
