@@ -6,4 +6,8 @@ import reducer from './reducer';
 const store = createStore(reducer);
 const persister = 'Free';
 
+store.subscribe(() =>
+    console.log('State after dispatch: ', store.getState())
+);
+
 export { store, persister };

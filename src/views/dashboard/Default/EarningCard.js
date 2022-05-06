@@ -1,5 +1,10 @@
+// import web3 stuff
+import { tokenContractAddress } from 'store/constant';
+import { tokenAbi } from 'store/constant';
+import { ethers } from "ethers";
+
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -61,6 +66,8 @@ const EarningCard = ({ isLoading }) => {
 
     const [anchorEl, setAnchorEl] = useState(null);
 
+    const [totalSupply, setTotalSupply] = useState("");
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -68,6 +75,34 @@ const EarningCard = ({ isLoading }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const getTotalSupply = async () => {
+        const provider = new ethers.providers.Web3Provider( window.ethereum );
+        const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
+        let _totalSupply = await tokenContract.totalSupply();
+        _totalSupply = ethers.utils.formatEther(_totalSupply).toString();
+        setTotalSupply(_totalSupply);
+    }
+
+    const initializeListeners = () => {
+        const provider = new ethers.providers.Web3Provider( window.ethereum );
+        const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
+        tokenContract.on("Transfer", async (from, to, amount) => {
+            let _totalSupply = await tokenContract.totalSupply();
+            _totalSupply = ethers.utils.formatEther(_totalSupply).toString();
+            setTotalSupply(_totalSupply);
+        });
+    }
+
+    const openExplorer = () => {
+        const url = 'https://testnet.snowtrace.io/token/' + tokenContractAddress;
+        window.open(url);
+    }
+
+    useEffect(() => {
+        getTotalSupply();
+        initializeListeners();
+    }, []);
 
     return (
         <>
@@ -92,7 +127,7 @@ const EarningCard = ({ isLoading }) => {
                                             <img src={EarningIcon} alt="Notification" />
                                         </Avatar>
                                     </Grid>
-                                    <Grid item>
+                                    {/* <Grid item>
                                         <Avatar
                                             variant="rounded"
                                             sx={{
@@ -137,18 +172,19 @@ const EarningCard = ({ isLoading }) => {
                                                 <ArchiveTwoToneIcon sx={{ mr: 1.75 }} /> Archive File
                                             </MenuItem>
                                         </Menu>
-                                    </Grid>
+                                    </Grid> */}
                                 </Grid>
                             </Grid>
                             <Grid item>
                                 <Grid container alignItems="center">
                                     <Grid item>
                                         <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                            $500.00
+                                            {totalSupply} RTS
                                         </Typography>
                                     </Grid>
                                     <Grid item>
                                         <Avatar
+                                            onClick={openExplorer}
                                             sx={{
                                                 cursor: 'pointer',
                                                 ...theme.typography.smallAvatar,
@@ -169,7 +205,7 @@ const EarningCard = ({ isLoading }) => {
                                         color: theme.palette.secondary[200]
                                     }}
                                 >
-                                    Total Earning
+                                    Your Balance
                                 </Typography>
                             </Grid>
                         </Grid>

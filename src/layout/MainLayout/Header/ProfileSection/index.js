@@ -1,10 +1,19 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from "@mui/material";
+import { SET_ACCOUNT_ADDRESS } from 'store/actionsAccount';
 
 
 const ProfileSection = () => {
 
+    const dispatch = useDispatch();
+    const account = useSelector((state) => state.account);
+    const [accountAddress, setAccountAddress] = useState(account.accountAddress);
     const [connectButtonText, setConnectButtonText] = useState("Sign In");
+
+    useEffect(() => {
+        dispatch({ type: SET_ACCOUNT_ADDRESS, accountAddress });
+    }, [dispatch, accountAddress]);
 
     //Connect Account Function
     async function connectAccount() {
@@ -30,12 +39,14 @@ const ProfileSection = () => {
             account[40] +
             account[41];
         setConnectButtonText( text );
+        setAccountAddress( account );
     }
     
     return (
         <>
             <Button
                 color="secondary"
+                variant="outlined"
                 onClick={connectAccount}
             >
                 {connectButtonText}

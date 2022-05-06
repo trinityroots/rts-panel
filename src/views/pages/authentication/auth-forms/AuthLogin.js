@@ -230,7 +230,7 @@ const FirebaseLogin = ({ ...others }) => {
                                     fullWidth
                                     size="large"
                                     type="submit"
-                                    variant="contained"
+                                    variant="outlined"
                                     color="secondary"
                                 >
                                     Sign in

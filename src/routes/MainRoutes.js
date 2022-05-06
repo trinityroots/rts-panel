@@ -8,14 +8,9 @@ import Loadable from 'ui-component/Loadable';
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
 
 // utilities routing
-const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
-const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
-const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
-const UtilsMaterialIcons = Loadable(lazy(() => import('views/utilities/MaterialIcons')));
-const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons')));
-
-// sample page routing
-const SamplePage = Loadable(lazy(() => import('views/sample-page')));
+const UtilsAccessControl = Loadable(lazy(() => import('views/utilities/AccessControl')));
+const UtilsSupply = Loadable(lazy(() => import('views/utilities/Supply')));
+const UtilsTransfer = Loadable(lazy(() => import('views/utilities/Transfer')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -32,29 +27,17 @@ const MainRoutes = {
             element: <DashboardDefault />
         },
         {
-            path: '/utils/util-typography',
-            element: <UtilsTypography />
+            path: '/utils/util-access-control',
+            element: <UtilsAccessControl />
         },
         {
-            path: '/utils/util-color',
-            element: <UtilsColor />
+            path: '/utils/util-supply',
+            element: <UtilsSupply />
         },
         {
-            path: '/utils/util-shadow',
-            element: <UtilsShadow />
+            path: '/utils/util-transfer',
+            element: <UtilsTransfer />
         },
-        {
-            path: '/icons/tabler-icons',
-            element: <UtilsTablerIcons />
-        },
-        {
-            path: '/icons/material-icons',
-            element: <UtilsMaterialIcons />
-        },
-        {
-            path: '/sample-page',
-            element: <SamplePage />
-        }
     ]
 };
 

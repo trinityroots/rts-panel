@@ -1,4 +1,10 @@
+// import web3 stuff
+import { tokenContractAddress } from 'store/constant';
+import { tokenAbi } from 'store/constant';
+import { ethers } from "ethers";
+
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -42,6 +48,31 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 const TotalIncomeLightCard = ({ isLoading }) => {
     const theme = useTheme();
 
+    const [totalSupply, setTotalSupply] = useState("");
+
+    const getTotalSupply = async () => {
+        const provider = new ethers.providers.Web3Provider( window.ethereum );
+        const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
+        let _totalSupply = await tokenContract.totalSupply();
+        _totalSupply = ethers.utils.formatEther(_totalSupply).toString();
+        setTotalSupply(_totalSupply);
+    }
+    
+    const initializeListeners = () => {
+        const provider = new ethers.providers.Web3Provider( window.ethereum );
+        const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
+        tokenContract.on("Transfer", async (from, to, amount) => {
+            let _totalSupply = await tokenContract.totalSupply();
+            _totalSupply = ethers.utils.formatEther(_totalSupply).toString();
+            setTotalSupply(_totalSupply);
+        });
+    }
+    
+    useEffect(() => {
+        getTotalSupply();
+        initializeListeners();
+    }, []);
+
     return (
         <>
             {isLoading ? (
@@ -70,7 +101,7 @@ const TotalIncomeLightCard = ({ isLoading }) => {
                                         mt: 0.45,
                                         mb: 0.45
                                     }}
-                                    primary={<Typography variant="h4">$203k</Typography>}
+                                    primary={<Typography variant="h4">{totalSupply} RTS</Typography>}
                                     secondary={
                                         <Typography
                                             variant="subtitle2"
@@ -79,7 +110,7 @@ const TotalIncomeLightCard = ({ isLoading }) => {
                                                 mt: 0.5
                                             }}
                                         >
-                                            Total Income
+                                            Total Supply
                                         </Typography>
                                     }
                                 />

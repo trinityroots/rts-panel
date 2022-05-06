@@ -1,4 +1,12 @@
+// import web3 stuff
+import { tokenContractAddress } from 'store/constant';
+import { tokenAbi } from 'store/constant';
+import { ethers } from "ethers";
+
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { SET_ACCOUNT_BALANCE } from 'store/actionsAccount';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -44,6 +52,42 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 const TotalIncomeDarkCard = ({ isLoading }) => {
     const theme = useTheme();
 
+    const dispatch = useDispatch();
+    const account = useSelector((state) => state.account);
+
+    const [accountBalance, setAccountBalance] = useState(account.accountBalance);
+
+    const getBalance = async () => {
+        if (account.accountAddress) {
+            const provider = new ethers.providers.Web3Provider( window.ethereum );
+            const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
+            let _totalBalance = await tokenContract.balanceOf(account.accountAddress);
+            _totalBalance = ethers.utils.formatEther(_totalBalance).toString();
+            setAccountBalance(_totalBalance + ' RTS' );
+        }
+    }
+    
+    const initializeListeners = () => {
+        const provider = new ethers.providers.Web3Provider( window.ethereum );
+        const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
+        tokenContract.on("Transfer", async (from, to, amount) => {
+            if( (from === account.accountAddress) || (to === account.accountAddress) ){
+                let _totalBalance = await tokenContract.balanceOf(account.accountAddress);
+                _totalBalance = ethers.utils.formatEther(_totalBalance).toString();
+                setAccountBalance(_totalBalance + ' RTS' );
+            } 
+        });
+    }
+
+    useEffect(() => {
+        dispatch({ type: SET_ACCOUNT_BALANCE, accountBalance });
+    }, [dispatch, accountBalance]);
+    
+    useEffect(() => {
+        getBalance();
+        initializeListeners();
+    }, [account.accountAddress]);
+
     return (
         <>
             {isLoading ? (
@@ -74,12 +118,12 @@ const TotalIncomeDarkCard = ({ isLoading }) => {
                                     }}
                                     primary={
                                         <Typography variant="h4" sx={{ color: '#fff' }}>
-                                            $203k
+                                            {accountBalance}
                                         </Typography>
                                     }
                                     secondary={
                                         <Typography variant="subtitle2" sx={{ color: 'primary.light', mt: 0.25 }}>
-                                            Total Income
+                                            Your Balance
                                         </Typography>
                                     }
                                 />
