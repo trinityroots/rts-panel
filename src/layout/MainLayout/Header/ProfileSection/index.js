@@ -15,17 +15,8 @@ const ProfileSection = () => {
         dispatch({ type: SET_ACCOUNT_ADDRESS, accountAddress });
     }, [dispatch, accountAddress]);
 
-    //Connect Account Function
-    async function connectAccount() {
-        if (typeof window.ethereum !== "undefined") {
-            console.log("Injected Web3 Wallet is installed!");
-        }else{
-            alert("You must install metamask!");
-        }
-        const accounts = await window.ethereum.request({
-            method: "eth_requestAccounts",
-        });
-        const account = accounts[0];
+    //create text for sign in button
+    const createButtonText = (account) => {
         const text =
             account[0] +
             account[1] +
@@ -38,8 +29,35 @@ const ProfileSection = () => {
             account[39] +
             account[40] +
             account[41];
-        setConnectButtonText( text );
+        return text;
+    }
+
+    //Connect Account Function
+    async function connectAccount() {
+        if (typeof window.ethereum !== "undefined") {
+            console.log("Injected Web3 Wallet is installed!");
+        }else{
+            alert("You must install metamask!");
+        }
+        const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+        });
+        const account = accounts[0];
+        const buttonText = createButtonText( account );
+        setConnectButtonText( buttonText );
         setAccountAddress( account );
+
+        //add event listener for account change
+        window.ethereum.on('accountsChanged', function (accounts) {
+            const account = accounts[0];
+            const buttonText = createButtonText( account );
+            setConnectButtonText( buttonText );
+            setAccountAddress( account );
+        });
+        //add event listener for network change
+        // window.ethereum.on('networkChanged', function (networkId) {
+        //     // Time to reload your interface with the new networkId
+        // })
     }
     
     return (
