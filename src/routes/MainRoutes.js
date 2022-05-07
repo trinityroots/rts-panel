@@ -11,6 +11,8 @@ const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')))
 const UtilsAccessControl = Loadable(lazy(() => import('views/utilities/AccessControl')));
 const UtilsSupply = Loadable(lazy(() => import('views/utilities/Supply')));
 const UtilsTransfer = Loadable(lazy(() => import('views/utilities/Transfer')));
+const UtilsApprove = Loadable(lazy(() => import('views/utilities/Approve')));
+const UtilsTransferFrom = Loadable(lazy(() => import('views/utilities/TransferFrom')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -37,6 +39,14 @@ const MainRoutes = {
         {
             path: '/utils/util-transfer',
             element: <UtilsTransfer />
+        },
+        {
+            path: '/utils/util-approve',
+            element: <UtilsApprove />
+        },
+        {
+            path: '/utils/util-transfer-from',
+            element: <UtilsTransferFrom />
         },
     ]
 };

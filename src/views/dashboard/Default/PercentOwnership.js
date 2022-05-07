@@ -6,10 +6,9 @@ import { ethers } from "ethers";
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { SET_ACCOUNT_BALANCE } from 'store/actionsAccount';
 
 // material-ui
-import { styled, useTheme } from '@mui/material/styles';
+import { useTheme, styled } from '@mui/material/styles';
 import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 
 // project imports
@@ -17,7 +16,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
-import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
+import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -47,23 +46,27 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     }
 }));
 
-// ==============================|| DASHBOARD - TOTAL INCOME DARK CARD ||============================== //
+// ==============================|| DASHBOARD - TOTAL INCOME LIGHT CARD ||============================== //
 
-const TotalIncomeDarkCard = ({ isLoading }) => {
+const PercentOwnership = ({ isLoading }) => {
     const theme = useTheme();
-
-    const dispatch = useDispatch();
     const account = useSelector((state) => state.account);
 
-    const [accountBalance, setAccountBalance] = useState(account.accountBalance);
+    const [percentOwnership, setPercentOwnership] = useState("-");
 
-    const getBalance = async () => {
-        if (account.accountAddress) {
-            const provider = new ethers.providers.Web3Provider( window.ethereum );
-            const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
-            let _totalBalance = await tokenContract.balanceOf(account.accountAddress);
-            _totalBalance = ethers.utils.formatEther(_totalBalance).toString();
-            setAccountBalance(_totalBalance + ' RTS' );
+    const getPercentOwnership = async () => {
+        const provider = new ethers.providers.Web3Provider( window.ethereum );
+        const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
+        let _totalBalance = await tokenContract.balanceOf(account.accountAddress);
+        let _totalSupply = await tokenContract.totalSupply();
+        _totalBalance = parseFloat(ethers.utils.formatEther(_totalBalance).toString());
+        _totalSupply = parseFloat(ethers.utils.formatEther(_totalSupply).toString());
+        if ( _totalSupply !== 0 ) {
+            const _percentOwnership = 100 * (_totalBalance / _totalSupply);
+            setPercentOwnership( _percentOwnership.toFixed(2).toString() );
+        }
+        else {
+            setPercentOwnership( '-' );
         }
     }
     
@@ -71,21 +74,15 @@ const TotalIncomeDarkCard = ({ isLoading }) => {
         const provider = new ethers.providers.Web3Provider( window.ethereum );
         const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
         tokenContract.on("Transfer", async (from, to, amount) => {
-            if( (from === account.accountAddress) || (to === account.accountAddress) ){
-                let _totalBalance = await tokenContract.balanceOf(account.accountAddress);
-                _totalBalance = ethers.utils.formatEther(_totalBalance).toString();
-                setAccountBalance(_totalBalance + ' RTS' );
-            } 
+            getPercentOwnership();            
         });
     }
-
-    useEffect(() => {
-        dispatch({ type: SET_ACCOUNT_BALANCE, accountBalance });
-    }, [dispatch, accountBalance]);
     
     useEffect(() => {
-        getBalance();
-        initializeListeners();
+        if ( account.accountAddress ){
+            getPercentOwnership();
+            initializeListeners();
+        }
     }, [account.accountAddress]);
 
     return (
@@ -107,7 +104,7 @@ const TotalIncomeDarkCard = ({ isLoading }) => {
                                             color: '#fff'
                                         }}
                                     >
-                                        <TableChartOutlinedIcon fontSize="inherit" />
+                                        <StorefrontTwoToneIcon fontSize="inherit" />
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText
@@ -116,14 +113,13 @@ const TotalIncomeDarkCard = ({ isLoading }) => {
                                         mt: 0.45,
                                         mb: 0.45
                                     }}
-                                    primary={
-                                        <Typography variant="h4" sx={{ color: '#fff' }}>
-                                            {accountBalance}
-                                        </Typography>
-                                    }
+                                    primary={<Typography variant="h4" sx={{ color: '#fff' }}>{percentOwnership}%</Typography>}
                                     secondary={
-                                        <Typography variant="subtitle2" sx={{ color: 'primary.light', mt: 0.25 }}>
-                                            Your Balance
+                                        <Typography
+                                            variant="subtitle2"
+                                            sx={{ color: 'primary.light', mt: 0.25 }}
+                                        >
+                                            Percent Ownership
                                         </Typography>
                                     }
                                 />
@@ -136,8 +132,8 @@ const TotalIncomeDarkCard = ({ isLoading }) => {
     );
 };
 
-TotalIncomeDarkCard.propTypes = {
+PercentOwnership.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default TotalIncomeDarkCard;
+export default PercentOwnership;

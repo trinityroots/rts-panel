@@ -43,10 +43,6 @@ const status = [
         label: 'New'
     },
     {
-        value: 'unread',
-        label: 'Unread'
-    },
-    {
         value: 'other',
         label: 'Other'
     }

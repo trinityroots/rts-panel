@@ -45,7 +45,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| DASHBOARD - TOTAL INCOME LIGHT CARD ||============================== //
 
-const TotalIncomeLightCard = ({ isLoading }) => {
+const TotalSupply = ({ isLoading }) => {
     const theme = useTheme();
 
     const [totalSupply, setTotalSupply] = useState("");
@@ -65,9 +65,7 @@ const TotalIncomeLightCard = ({ isLoading }) => {
             const provider = new ethers.providers.Web3Provider( window.ethereum );
             const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
             tokenContract.on("Transfer", async (from, to, amount) => {
-                let _totalSupply = await tokenContract.totalSupply();
-                _totalSupply = ethers.utils.formatEther(_totalSupply).toString();
-                setTotalSupply(_totalSupply);
+                getTotalSupply();
             });
         }
     }
@@ -127,8 +125,8 @@ const TotalIncomeLightCard = ({ isLoading }) => {
     );
 };
 
-TotalIncomeLightCard.propTypes = {
+TotalSupply.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default TotalIncomeLightCard;
+export default TotalSupply;

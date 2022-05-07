@@ -4,12 +4,10 @@ import { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 
 // project imports
-// import EarningCard from './EarningCard';
-import PopularCard from './PopularCard';
-// import TotalOrderLineChartCard from './TotalOrderLineChartCard';
-import TotalIncomeDarkCard from './TotalIncomeDarkCard';
-import TotalIncomeLightCard from './TotalIncomeLightCard';
-import TotalGrowthBarChart from './TotalGrowthBarChart';
+import YourBalance from './YourBalance';
+import TotalSupply from './TotalSupply';
+import PercentOwnership from './PercentOwnership';
+import ActivityCard from './ActivityCard';
 import { gridSpacing } from 'store/constant';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
@@ -24,21 +22,21 @@ const Dashboard = () => {
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
-                    <Grid item lg={6} md={12} sm={12} xs={12}>
-                        <TotalIncomeDarkCard isLoading={isLoading} />
+                    <Grid item lg={4} md={12} sm={12} xs={12}>
+                        <YourBalance isLoading={isLoading} />
                     </Grid>
-                    <Grid item lg={6} md={12} sm={12} xs={12}>
-                        <TotalIncomeLightCard isLoading={isLoading} />
+                    <Grid item lg={4} md={12} sm={12} xs={12}>
+                        <TotalSupply isLoading={isLoading} />
+                    </Grid>
+                    <Grid item lg={4} md={12} sm={12} xs={12}>
+                        <PercentOwnership isLoading={isLoading} />
                     </Grid>
                 </Grid>
             </Grid>
             <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
-                    <Grid item xs={12} md={8}>
-                        <TotalGrowthBarChart isLoading={isLoading} />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <PopularCard isLoading={isLoading} />
+                    <Grid item xs={12} md={12}>
+                        <ActivityCard isLoading={isLoading} />
                     </Grid>
                 </Grid>
             </Grid>
