@@ -51,21 +51,25 @@ const TotalIncomeLightCard = ({ isLoading }) => {
     const [totalSupply, setTotalSupply] = useState("");
 
     const getTotalSupply = async () => {
-        const provider = new ethers.providers.Web3Provider( window.ethereum );
-        const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
-        let _totalSupply = await tokenContract.totalSupply();
-        _totalSupply = ethers.utils.formatEther(_totalSupply).toString();
-        setTotalSupply(_totalSupply);
-    }
-    
-    const initializeListeners = () => {
-        const provider = new ethers.providers.Web3Provider( window.ethereum );
-        const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
-        tokenContract.on("Transfer", async (from, to, amount) => {
+        if (typeof window.ethereum !== "undefined") {
+            const provider = new ethers.providers.Web3Provider( window.ethereum );
+            const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
             let _totalSupply = await tokenContract.totalSupply();
             _totalSupply = ethers.utils.formatEther(_totalSupply).toString();
             setTotalSupply(_totalSupply);
-        });
+        }
+    }
+    
+    const initializeListeners = () => {
+        if (typeof window.ethereum !== "undefined") {
+            const provider = new ethers.providers.Web3Provider( window.ethereum );
+            const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
+            tokenContract.on("Transfer", async (from, to, amount) => {
+                let _totalSupply = await tokenContract.totalSupply();
+                _totalSupply = ethers.utils.formatEther(_totalSupply).toString();
+                setTotalSupply(_totalSupply);
+            });
+        }
     }
     
     useEffect(() => {
