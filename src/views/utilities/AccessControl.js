@@ -66,7 +66,7 @@ const AccessControl = () => {
                         <Grid container direction="column" spacing={1}>
                             <Grid item>
                                 <FormControl fullWidth>
-                                    <InputLabel htmlFor="outlined-adornment-grant-bytes32">Base32 Role</InputLabel>
+                                    <InputLabel htmlFor="outlined-adornment-grant-bytes32">Bytes32 Role</InputLabel>
                                     <OutlinedInput
                                         id="outlined-adornment-grant-bytes32"
                                         type="string"
