@@ -71,7 +71,7 @@ const Supply = () => {
             <Grid container spacing={gridSpacing}>
                 <Grid item xs={0} sm={0} md={4} lg={4}/>
                 <Grid item xs={12} sm={12} md={4} lg={4}>
-                    <SubCard title="Modify Supply">
+                    {/* <SubCard title="Modify Supply"> */}
                         <Grid container direction="column" spacing={1}>
                             <Grid item>
                                 <FormControl fullWidth>
@@ -122,7 +122,7 @@ const Supply = () => {
                                 </AnimateButton>
                             </Grid>
                         </Grid>
-                    </SubCard>
+                    {/* </SubCard> */}
                 </Grid>
                 <Grid item xs={0} sm={0} md={4} lg={4}/>
             </Grid>
