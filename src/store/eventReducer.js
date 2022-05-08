@@ -14,6 +14,11 @@ const eventReducer = (state = initialState, action) => {
                 ...state,
                 transfer: state.transfer.concat(action.newTransfer)
             };
+        case actionTypes.CLEAR_ALL_TRANSFER:
+            return {
+                ...state,
+                transfer: action.emptyTransfer
+            };
         default:
             return state;
     }
