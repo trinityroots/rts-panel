@@ -1,12 +1,14 @@
 // assets
-import { IconKey, IconSend, IconCircleCheck, IconVectorTriangle } from '@tabler/icons';
+import { IconKey, IconSend, IconCircleCheck, IconVectorTriangle, IconWorld } from '@tabler/icons';
+import { tokenContractAddress, explorer } from 'store/constant';
 
 // constant
 const icons = {
     IconKey,
     IconSend,
     IconCircleCheck,
-    IconVectorTriangle
+    IconVectorTriangle,
+    IconWorld
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -39,6 +41,16 @@ const utilities = {
             type: 'item',
             url: '/utils/util-transfer-from',
             icon: icons.IconVectorTriangle,
+            breadcrumbs: false
+        },
+        {
+            id: 'util-explorer',
+            title: 'Explorer',
+            type: 'item',
+            target: '_blank',
+            external: true,
+            url: `${explorer}${tokenContractAddress}`,
+            icon: icons.IconWorld,
             breadcrumbs: false
         },
     ]
