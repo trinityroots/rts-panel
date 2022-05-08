@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -49,6 +50,8 @@ const TotalSupply = ({ isLoading }) => {
     const theme = useTheme();
 
     const [totalSupply, setTotalSupply] = useState("");
+    const event = useSelector((state) => state.event);
+    const account = useSelector((state) => state.account);
 
     const getTotalSupply = async () => {
         if (typeof window.ethereum !== "undefined") {
@@ -60,20 +63,10 @@ const TotalSupply = ({ isLoading }) => {
         }
     }
     
-    const initializeListeners = () => {
-        if (typeof window.ethereum !== "undefined") {
-            const provider = new ethers.providers.Web3Provider( window.ethereum );
-            const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
-            tokenContract.on("Transfer", async (from, to, amount) => {
-                getTotalSupply();
-            });
-        }
-    }
-    
     useEffect(() => {
+        console.log('Calculating Total Supply');
         getTotalSupply();
-        initializeListeners();
-    }, []);
+    }, [account.accountAddress, event.transfer]);
 
     return (
         <>

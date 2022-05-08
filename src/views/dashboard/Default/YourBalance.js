@@ -54,26 +54,16 @@ const YourBalance = ({ isLoading }) => {
 
     const dispatch = useDispatch();
     const account = useSelector((state) => state.account);
+    const event = useSelector((state) => state.event)
 
     const [accountBalance, setAccountBalance] = useState(account.accountBalance);
 
     const getBalance = async () => {
-        if (account.accountAddress) {
-            const provider = new ethers.providers.Web3Provider( window.ethereum );
-            const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
-            let _totalBalance = await tokenContract.balanceOf(account.accountAddress);
-            _totalBalance = ethers.utils.formatEther(_totalBalance).toString();
-            setAccountBalance(_totalBalance + ' RTS' );
-        }
-    }
-    
-    const initializeListeners = () => {
-        console.log(tokenContractAddress)
         const provider = new ethers.providers.Web3Provider( window.ethereum );
         const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
-        tokenContract.on("Transfer", async (from, to, amount) => {
-            getBalance();
-        });
+        let _totalBalance = await tokenContract.balanceOf(account.accountAddress);
+        _totalBalance = ethers.utils.formatEther(_totalBalance).toString();
+        setAccountBalance(_totalBalance + ' RTS' );
     }
 
     useEffect(() => {
@@ -82,10 +72,10 @@ const YourBalance = ({ isLoading }) => {
     
     useEffect(() => {
         if ( account.accountAddress ){
+            console.log('Calculating Balance');
             getBalance();
-            initializeListeners();
         }
-    }, [account.accountAddress]);
+    }, [account.accountAddress, event.transfer]);
 
     return (
         <>

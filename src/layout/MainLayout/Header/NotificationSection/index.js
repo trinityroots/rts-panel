@@ -1,5 +1,12 @@
+// import web3 stuff
+import { tokenContractAddress } from 'store/constant';
+import { tokenAbi } from 'store/constant';
+import { ethers } from "ethers";
+
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { SET_NEW_TRANSFER } from 'store/actionsEvent';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -52,6 +59,64 @@ const status = [
 
 const NotificationSection = () => {
     const theme = useTheme();
+
+    const dispatch = useDispatch();
+    const account = useSelector((state) => state.account);
+    const event = useSelector((state) => state.event);
+
+    const [newTransfer, setNewTransfer] = useState(event.transfer);
+    
+    const initializeListeners = () => {
+        const provider = new ethers.providers.Web3Provider( window.ethereum );
+        const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider );
+        tokenContract.on("Transfer", async (from, to, amount) => {
+            const time = new Date().getTime();
+            console.log('New transfer event on:' + time);
+            const _from =
+                from[0] +
+                from[1] +
+                from[2] +
+                from[3] +
+                from[4] +
+                from[5] +
+                "..." +
+                from[38] +
+                from[39] +
+                from[40] +
+                from[41];
+            const _to =
+                to[0] +
+                to[1] +
+                to[2] +
+                to[3] +
+                to[4] +
+                to[5] +
+                "..." +
+                to[38] +
+                to[39] +
+                to[40] +
+                to[41];
+            setNewTransfer({
+                from: from,
+                to: to,
+                _from:_from, 
+                _to:_to, 
+                amount:parseFloat(ethers.utils.formatEther(amount).toString()), 
+                time:time
+            });
+        });
+    }
+
+    useEffect(() => {
+        dispatch({ type: SET_NEW_TRANSFER, newTransfer });
+    }, [dispatch, newTransfer]);
+    
+    useEffect(() => {
+        if ( account.accountAddress ){
+            initializeListeners();
+        }
+    }, [account.accountAddress]);
+
     const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
 
     const [open, setOpen] = useState(false);

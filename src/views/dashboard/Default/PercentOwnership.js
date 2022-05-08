@@ -51,6 +51,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 const PercentOwnership = ({ isLoading }) => {
     const theme = useTheme();
     const account = useSelector((state) => state.account);
+    const event = useSelector((state) => state.event);
 
     const [percentOwnership, setPercentOwnership] = useState("-");
 
@@ -70,20 +71,12 @@ const PercentOwnership = ({ isLoading }) => {
         }
     }
     
-    const initializeListeners = () => {
-        const provider = new ethers.providers.Web3Provider( window.ethereum );
-        const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
-        tokenContract.on("Transfer", async (from, to, amount) => {
-            getPercentOwnership();            
-        });
-    }
-    
     useEffect(() => {
         if ( account.accountAddress ){
+            console.log('Calculating PO');
             getPercentOwnership();
-            initializeListeners();
         }
-    }, [account.accountAddress]);
+    }, [account.accountAddress, event.transfer]);
 
     return (
         <>
