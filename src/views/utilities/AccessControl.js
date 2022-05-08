@@ -1,6 +1,7 @@
 // import web3 stuff
 import { tokenContractAddress } from 'store/constant';
 import { tokenAbi } from 'store/constant';
+import { minterRole, burnerRole, adminRole } from 'store/constant';
 import { ethers } from "ethers";
 
 import { Grid } from '@mui/material';
@@ -9,10 +10,9 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 // project imports
-import SubCard from 'ui-component/cards/SubCard';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
-import { FormGroup, Switch, InputLabel, OutlinedInput, FormControl, Button, FormControlLabel } from '@mui/material'
+import { FormGroup, Switch, InputLabel, OutlinedInput, FormControl, Button, FormControlLabel, Typography} from '@mui/material'
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // ==============================|| TYPOGRAPHY ||============================== //
@@ -22,6 +22,12 @@ const AccessControl = () => {
     const [role, setRole] = useState("");
     const [checkedRevoke, setCheckedRevoke] = useState(false);
     const account = useSelector((state) => state.account);
+
+    const roleMap = {
+        burner: burnerRole,
+        minter: minterRole,
+        admin: adminRole
+    };
 
     const handleAddressChange = (event) => {
         setReceiverAddress(event.target.value);
@@ -36,13 +42,23 @@ const AccessControl = () => {
             const provider = new ethers.providers.Web3Provider( window.ethereum );
             const signer = provider.getSigner();
             const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, signer);
+            let _role = '';
+            if ( role === 'admin' ) {
+                _role = roleMap.admin;
+            }
+            if ( role === 'minter' ) {
+                _role = roleMap.minter;
+            }
+            if ( role === 'burner' ) {
+                _role = roleMap.burner;
+            }
             if ( checkedRevoke ) {
-                tokenContract.revokeRole(role, receiverAddress)
+                tokenContract.revokeRole(_role, receiverAddress)
                     .then(console.log)
                     .catch((err) => alert(err.data.message));
             }
             else {
-                tokenContract.grantRole(role, receiverAddress)
+                tokenContract.grantRole(_role, receiverAddress)
                     .then(console.log)
                     .catch((err) => alert(err.data.message));
             }
@@ -66,13 +82,13 @@ const AccessControl = () => {
                         <Grid container direction="column" spacing={1}>
                             <Grid item>
                                 <FormControl fullWidth>
-                                    <InputLabel htmlFor="outlined-adornment-grant-bytes32">Bytes32 Role</InputLabel>
+                                    <InputLabel htmlFor="outlined-adornment-grant-bytes32">Role: admin, burner, minter</InputLabel>
                                     <OutlinedInput
                                         id="outlined-adornment-grant-bytes32"
                                         type="string"
                                         name="grant-bytes-role"
                                         onChange={handleRoleChange}
-                                        label="Bytes32 Role"
+                                        label="Role: admin, burner, minter"
                                     />
                                 </FormControl>
                             </Grid>
