@@ -18,3 +18,11 @@ npm run deploy
 ```
 The above command will build the entire repo into a servable build for Github Pages.
 It will create a new branch gh-pages which will act as the deployment branch. Github Pages will automatically serve the static files in the build branch after Github Actions has finished running.
+
+## Features
+
+- Dashboard
+- Transfer
+- Approve
+- Access Control
+- Supply Control
