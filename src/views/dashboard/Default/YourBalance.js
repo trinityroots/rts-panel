@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';

@@ -5,14 +5,14 @@ import { ethers } from "ethers";
 
 import { Grid } from '@mui/material';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 // project imports
 import SubCard from 'ui-component/cards/SubCard';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
-import { FormGroup, Switch, InputLabel, OutlinedInput, FormControl, Button, FormControlLabel } from '@mui/material'
+import { Typography, InputLabel, OutlinedInput, FormControl, Button, FormControlLabel } from '@mui/material'
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // ==============================|| TYPOGRAPHY ||============================== //
@@ -20,7 +20,9 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 const Approve = () => { 
     const [spenderAddress, setSpenderAddress] = useState("");
     const [spenderAmount, setSpenderAmount] = useState("");
+    const [displayBalance, setDisplayBalance] = useState("-");
     const account = useSelector((state) => state.account);
+    const event = useSelector((state) => state.event);
 
     const handleAddressChange = (event) => {
         setSpenderAddress(event.target.value);
@@ -53,6 +55,25 @@ const Approve = () => {
 
     }
 
+    const getBalance = async () => {
+        if( account.accountAddress ) {
+            const provider = new ethers.providers.Web3Provider( window.ethereum );
+            const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
+            let _totalBalance = await tokenContract.balanceOf(account.accountAddress);
+            _totalBalance = ethers.utils.formatEther(_totalBalance).toString();
+            setDisplayBalance(_totalBalance + ' RTS' );
+        }
+    }
+
+    useEffect(() => {
+        if ( account.accountAddress ){
+            console.log('Calculating Balance');
+            getBalance();
+        } else {
+            setDisplayBalance('-');
+        }
+    }, [account.accountAddress, event.transfer]);
+
     return (
         <MainCard title="Approvals">
             <Grid container spacing={gridSpacing}>
@@ -83,6 +104,9 @@ const Approve = () => {
                                         label="Amount"
                                     />
                                 </FormControl>
+                            </Grid>
+                            <Grid item>
+                                <Typography>Balance: {displayBalance}</Typography>
                             </Grid>
                             <Grid item>
                                 <AnimateButton>

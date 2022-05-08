@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { CLEAR_ALL_TRANSFER } from 'store/actionsEvent';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Button, CardActions, CardContent, Divider, Grid, Typography } from '@mui/material';
+import { Avatar, CardContent, Divider, Grid, Typography, Button } from '@mui/material';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -12,8 +14,6 @@ import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
 
 // assets
-import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 
 // ==============================|| DASHBOARD DEFAULT - ACTIVITY CARD ||============================== //
@@ -21,6 +21,7 @@ import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDown
 const ActivityCard = ({ isLoading }) => {
     const theme = useTheme();
     const event = useSelector((state) => state.event);
+    const dispatch = useDispatch();
 
     const listRecentTransfers = event.transfer.map((transfer, index) => {
         let backgroundColor = theme.palette.success.light;
@@ -80,6 +81,11 @@ const ActivityCard = ({ isLoading }) => {
         );
     });
 
+    const clearActivity = () => {
+        const emptyTransfer = [];
+        dispatch({ type: CLEAR_ALL_TRANSFER, emptyTransfer });
+    }
+
     return (
         <>
             {isLoading ? (
@@ -92,6 +98,15 @@ const ActivityCard = ({ isLoading }) => {
                                 <Grid container alignContent="center" justifyContent="space-between">
                                     <Grid item>
                                         <Typography variant="h4">Recent Activity</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button
+                                            color="secondary"
+                                            variant="outlined"
+                                            onClick={clearActivity}
+                                        >
+                                            Clear
+                                        </Button>
                                     </Grid>
                                 </Grid>
                             </Grid>
