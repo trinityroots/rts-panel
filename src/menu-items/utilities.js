@@ -1,6 +1,6 @@
 // assets
 import { IconKey, IconSend, IconCircleCheck, IconVectorTriangle, IconWorld } from '@tabler/icons';
-import { tokenContractAddress, explorer } from 'store/constant';
+import { tokenContractAddress, tokenExplorer } from 'store/constant';
 
 // constant
 const icons = {
@@ -49,7 +49,7 @@ const utilities = {
             type: 'item',
             target: '_blank',
             external: true,
-            url: `${explorer}${tokenContractAddress}`,
+            url: `${tokenExplorer}${tokenContractAddress}`,
             icon: icons.IconWorld,
             breadcrumbs: false
         },

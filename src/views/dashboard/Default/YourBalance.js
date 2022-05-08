@@ -1,5 +1,5 @@
 // import web3 stuff
-import { tokenContractAddress } from 'store/constant';
+import { tokenContractAddress, tokenExplorer } from 'store/constant';
 import { tokenAbi } from 'store/constant';
 import { ethers } from "ethers";
 
@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
-import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import { Link, Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -84,6 +84,9 @@ const YourBalance = ({ isLoading }) => {
                             <ListItem alignItems="center" disableGutters sx={{ py: 0 }}>
                                 <ListItemAvatar>
                                     <Avatar
+                                        target="_blank" 
+                                        component={Link} 
+                                        href={tokenExplorer + tokenContractAddress + '?a=' + account.accountAddress}
                                         variant="rounded"
                                         sx={{
                                             ...theme.typography.commonAvatar,
