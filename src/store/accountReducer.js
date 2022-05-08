@@ -3,7 +3,7 @@ import * as actionTypes from './actionsAccount';
 
 export const initialState = {
     accountAddress: null,
-    accountBalance: '-'
+    accountButtonText: 'Sign In'
 };
 
 // ==============================|| ACCOUNT REDUCER ||============================== //
@@ -15,10 +15,10 @@ const accountReducer = (state = initialState, action) => {
                 ...state,
                 accountAddress: action.accountAddress
             };
-        case actionTypes.SET_ACCOUNT_BALANCE:
+        case actionTypes.SET_ACCOUNT_BUTTON_TEXT:
             return {
                 ...state,
-                accountBalance: action.accountBalance
+                accountButtonText: action.buttonText
             }
         default:
             return state;

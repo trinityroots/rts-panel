@@ -75,6 +75,8 @@ const PercentOwnership = ({ isLoading }) => {
         if ( account.accountAddress ){
             console.log('Calculating PO');
             getPercentOwnership();
+        } else {
+            setPercentOwnership( '-' );
         }
     }, [account.accountAddress, event.transfer]);
 

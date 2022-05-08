@@ -6,7 +6,6 @@ import { ethers } from "ethers";
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { SET_ACCOUNT_BALANCE } from 'store/actionsAccount';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -52,11 +51,10 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 const YourBalance = ({ isLoading }) => {
     const theme = useTheme();
 
-    const dispatch = useDispatch();
     const account = useSelector((state) => state.account);
     const event = useSelector((state) => state.event)
 
-    const [accountBalance, setAccountBalance] = useState(account.accountBalance);
+    const [accountBalance, setAccountBalance] = useState('-');
 
     const getBalance = async () => {
         const provider = new ethers.providers.Web3Provider( window.ethereum );
@@ -65,15 +63,13 @@ const YourBalance = ({ isLoading }) => {
         _totalBalance = ethers.utils.formatEther(_totalBalance).toString();
         setAccountBalance(_totalBalance + ' RTS' );
     }
-
-    useEffect(() => {
-        dispatch({ type: SET_ACCOUNT_BALANCE, accountBalance });
-    }, [dispatch, accountBalance]);
     
     useEffect(() => {
         if ( account.accountAddress ){
             console.log('Calculating Balance');
             getBalance();
+        } else {
+            setAccountBalance('-');
         }
     }, [account.accountAddress, event.transfer]);
 
