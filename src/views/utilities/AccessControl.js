@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
-import { FormGroup, Switch, InputLabel, OutlinedInput, FormControl, Button, FormControlLabel, Typography} from '@mui/material'
+import { FormGroup, Switch, InputLabel, OutlinedInput, FormControl, Button, FormControlLabel } from '@mui/material'
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // ==============================|| TYPOGRAPHY ||============================== //

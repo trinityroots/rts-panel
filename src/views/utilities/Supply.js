@@ -9,7 +9,6 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 // project imports
-import SubCard from 'ui-component/cards/SubCard';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 import { FormGroup, Switch, InputLabel, OutlinedInput, FormControl, Button, FormControlLabel } from '@mui/material'
