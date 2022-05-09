@@ -61,7 +61,7 @@ const YourBalance = ({ isLoading }) => {
         const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
         let _totalBalance = await tokenContract.balanceOf(account.accountAddress);
         _totalBalance = ethers.utils.formatEther(_totalBalance).toString();
-        setAccountBalance(_totalBalance + ' RTS' );
+        setAccountBalance( _totalBalance );
     }
     
     useEffect(() => {
@@ -106,7 +106,7 @@ const YourBalance = ({ isLoading }) => {
                                     }}
                                     primary={
                                         <Typography variant="h4" sx={{ color: '#fff' }}>
-                                            {accountBalance}
+                                            {accountBalance} RTS
                                         </Typography>
                                     }
                                     secondary={

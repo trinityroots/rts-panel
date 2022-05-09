@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
-import { Typography, InputLabel, OutlinedInput, FormControl, Button } from '@mui/material'
+import { Typography, InputLabel, OutlinedInput, FormControl, Button, Link } from '@mui/material'
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // ==============================|| TYPOGRAPHY ||============================== //
@@ -44,7 +44,8 @@ const Approve = () => {
                 alert("Input must be a float greater than 0 e.g. 0.01");
                 return false;
             }
-            tokenContract.approve(spenderAddress, spenderAmount)
+            const amount = ethers.utils.parseUnits(spenderAmount, 18);
+            tokenContract.approve(spenderAddress, amount)
                 .then(console.log)
                 .catch((err) => alert(err.data.message));
         }
@@ -60,7 +61,13 @@ const Approve = () => {
             const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
             let _totalBalance = await tokenContract.balanceOf(account.accountAddress);
             _totalBalance = ethers.utils.formatEther(_totalBalance).toString();
-            setDisplayBalance(_totalBalance + ' RTS' );
+            setDisplayBalance( _totalBalance );
+        }
+    }
+
+    const useMax = () => {
+        if( account.accountAddress ) {
+            setSpenderAmount(displayBalance);
         }
     }
 
@@ -89,8 +96,12 @@ const Approve = () => {
                                         name="approve-spender"
                                         onChange={handleAddressChange}
                                         label="Spender Address"
+                                        value={spenderAddress}
                                     />
                                 </FormControl>
+                            </Grid>
+                            <Grid item>
+                                    <Typography>Balance: {displayBalance} RTS <Link onClick={useMax}>Use Max</Link></Typography>
                             </Grid>
                             <Grid item>
                                 <FormControl fullWidth>
@@ -101,11 +112,9 @@ const Approve = () => {
                                         name="approve-amount"
                                         onChange={handleAmountChange}
                                         label="Amount"
+                                        value={spenderAmount}
                                     />
                                 </FormControl>
-                            </Grid>
-                            <Grid item>
-                                <Typography>Balance: {displayBalance}</Typography>
                             </Grid>
                             <Grid item>
                                 <AnimateButton>

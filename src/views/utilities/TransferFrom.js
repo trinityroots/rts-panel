@@ -5,13 +5,13 @@ import { ethers } from "ethers";
 
 import { Grid } from '@mui/material';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
-import { InputLabel, OutlinedInput, FormControl, Button } from '@mui/material'
+import { InputLabel, OutlinedInput, FormControl, Button, Typography, Link } from '@mui/material'
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // ==============================|| TYPOGRAPHY ||============================== //
@@ -21,7 +21,9 @@ const TransferFrom = () => {
     const [fromAddress, setFromAddress] = useState("");
     const [receiverAddress, setReceiverAddress] = useState("");
     const [transferAmount, setTransferAmount] = useState("");
+    const [displayAllowance, setDisplayAllowance] = useState("");
     const account = useSelector((state) => state.account);
+    const event = useSelector((state) => state.event);
 
     const handleFromAddressChange = (event) => {
         setFromAddress(event.target.value);
@@ -59,6 +61,36 @@ const TransferFrom = () => {
 
     }
 
+    const getAllowance = async () => {
+        console.log(fromAddress.length)
+        if( account.accountAddress && fromAddress.length === 42 ) {
+            const provider = new ethers.providers.Web3Provider( window.ethereum );
+            const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
+            let _totalAllowance = await tokenContract.allowance(fromAddress, account.accountAddress);
+            _totalAllowance = ethers.utils.formatEther(_totalAllowance).toString();
+            setDisplayAllowance( _totalAllowance );
+        }
+    }
+
+    const useMax = () => {
+        if( account.accountAddress ) {
+            setTransferAmount(displayAllowance);
+        }
+    }
+
+    useEffect(() => {
+        if ( account.accountAddress ){
+            console.log('Calculating Allowance');
+            getAllowance();
+        } else {
+            setDisplayAllowance('-');
+        }
+    }, [account.accountAddress, event.transfer]);
+
+    useEffect(() => {
+        getAllowance();
+    }, [fromAddress]);
+
     return (
         <MainCard title="Transfer RTS">
             <Grid container spacing={gridSpacing}>
@@ -75,6 +107,7 @@ const TransferFrom = () => {
                                         name="transfer-from-account"
                                         onChange={handleFromAddressChange}
                                         label="From Address"
+                                        value={fromAddress}
                                     />
                                 </FormControl>
                             </Grid>
@@ -87,8 +120,12 @@ const TransferFrom = () => {
                                         name="transfer-account"
                                         onChange={handleAddressChange}
                                         label="To Address"
+                                        value={receiverAddress}
                                     />
                                 </FormControl>
+                            </Grid>
+                            <Grid item>
+                                <Typography>Allowance: {displayAllowance} RTS <Link onClick={useMax}>Use Max</Link></Typography>
                             </Grid>
                             <Grid item>
                                 <FormControl fullWidth>
@@ -99,6 +136,7 @@ const TransferFrom = () => {
                                         name="transfer-amount"
                                         onChange={handleAmountChange}
                                         label="Amount"
+                                        value={transferAmount}
                                     />
                                 </FormControl>
                             </Grid>
