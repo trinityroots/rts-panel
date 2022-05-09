@@ -65,48 +65,48 @@ const NotificationSection = () => {
     const event = useSelector((state) => state.event);
 
     const [newTransfer, setNewTransfer] = useState(event.transfer);
+    const [tokenContract, setTokenContract] = useState(null);
+
+    const transferCallback = async (from, to, amount) => {
+        const time = new Date().getTime();
+        console.log('New transfer event on:' + time);
+        const _from =
+            from[0] +
+            from[1] +
+            from[2] +
+            from[3] +
+            from[4] +
+            from[5] +
+            "..." +
+            from[38] +
+            from[39] +
+            from[40] +
+            from[41];
+        const _to =
+            to[0] +
+            to[1] +
+            to[2] +
+            to[3] +
+            to[4] +
+            to[5] +
+            "..." +
+            to[38] +
+            to[39] +
+            to[40] +
+            to[41];
+        setNewTransfer({
+            from: from,
+            to: to,
+            _from:_from, 
+            _to:_to, 
+            amount:parseFloat(ethers.utils.formatEther(amount).toString()), 
+            time:time
+        });
+    }
     
     const initializeListeners = () => {
         const provider = new ethers.providers.Web3Provider( window.ethereum );
-        const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider );
-        // tokenContract.removeAllListeners(["Transfer"]);
-        console.log(tokenContract.listeners("Transfer"));
-        tokenContract.on("Transfer", async (from, to, amount) => {
-            const time = new Date().getTime();
-            console.log('New transfer event on:' + time);
-            const _from =
-                from[0] +
-                from[1] +
-                from[2] +
-                from[3] +
-                from[4] +
-                from[5] +
-                "..." +
-                from[38] +
-                from[39] +
-                from[40] +
-                from[41];
-            const _to =
-                to[0] +
-                to[1] +
-                to[2] +
-                to[3] +
-                to[4] +
-                to[5] +
-                "..." +
-                to[38] +
-                to[39] +
-                to[40] +
-                to[41];
-            setNewTransfer({
-                from: from,
-                to: to,
-                _from:_from, 
-                _to:_to, 
-                amount:parseFloat(ethers.utils.formatEther(amount).toString()), 
-                time:time
-            });
-        });
+        setTokenContract(new ethers.Contract( tokenContractAddress, tokenAbi, provider ));
     }
 
     useEffect(() => {
@@ -114,10 +114,17 @@ const NotificationSection = () => {
     }, [dispatch, newTransfer]);
     
     useEffect(() => {
-        if ( account.accountAddress ){
+        if ( account.accountAddress && !tokenContract){
             initializeListeners();
         }
-    }, [account.accountAddress]);
+    }, [account.accountAddress, tokenContract]);
+
+    useEffect(() => {
+        if ( account.accountAddress && tokenContract){
+            console.log( tokenContract.listeners( "Transfer" ) );
+            tokenContract.on("Transfer", transferCallback);
+        }
+    }, [tokenContract]);
 
     const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
 
