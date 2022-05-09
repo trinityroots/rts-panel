@@ -69,7 +69,8 @@ const NotificationSection = () => {
     const initializeListeners = () => {
         const provider = new ethers.providers.Web3Provider( window.ethereum );
         const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider );
-        // tokenContract.removeAllListeners(["Transfer"]); BUG: this is unable to remove all listeners
+        // tokenContract.removeAllListeners(["Transfer"]);
+        console.log(tokenContract.listeners("Transfer"));
         tokenContract.on("Transfer", async (from, to, amount) => {
             const time = new Date().getTime();
             console.log('New transfer event on:' + time);

@@ -100,13 +100,12 @@ const ActivityCard = ({ isLoading }) => {
                                         <Typography variant="h4">Recent Activity</Typography>
                                     </Grid>
                                     <Grid item>
-                                        <Button
+                                        <Typography
                                             color="secondary"
-                                            variant="outlined"
                                             onClick={clearActivity}
                                         >
                                             Clear
-                                        </Button>
+                                        </Typography>
                                     </Grid>
                                 </Grid>
                             </Grid>
