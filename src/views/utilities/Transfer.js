@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
-import { InputLabel, OutlinedInput, FormControl, Button, Typography } from '@mui/material'
+import { InputLabel, OutlinedInput, FormControl, Button, Typography, Link } from '@mui/material'
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // ==============================|| TYPOGRAPHY ||============================== //
@@ -29,6 +29,7 @@ const Transfer = () => {
     }
 
     const handleAmountChange = (event) => {
+        console.log(event);
         setTransferAmount(event.target.value);
     }
 
@@ -62,7 +63,13 @@ const Transfer = () => {
             const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
             let _totalBalance = await tokenContract.balanceOf(account.accountAddress);
             _totalBalance = ethers.utils.formatEther(_totalBalance).toString();
-            setDisplayBalance(_totalBalance + ' RTS' );
+            setDisplayBalance(_totalBalance );
+        }
+    }
+
+    const useMax = () => {
+        if( account.accountAddress ) {
+            setTransferAmount(displayBalance);
         }
     }
 
@@ -88,11 +95,15 @@ const Transfer = () => {
                                     <OutlinedInput
                                         id="outlined-adornment-transfer-account"
                                         type="string"
-                                        name="transfer-amount"
+                                        name="transfer-account"
                                         onChange={handleAddressChange}
                                         label="Account Address"
+                                        value={receiverAddress}
                                     />
                                 </FormControl>
+                            </Grid>
+                            <Grid item>
+                                    <Typography>Balance: {displayBalance} RTS <Link onClick={useMax}>Use Max</Link></Typography>
                             </Grid>
                             <Grid item>
                                 <FormControl fullWidth>
@@ -103,11 +114,9 @@ const Transfer = () => {
                                         name="transfer-amount"
                                         onChange={handleAmountChange}
                                         label="Amount"
+                                        value={transferAmount}
                                     />
                                 </FormControl>
-                            </Grid>
-                            <Grid item>
-                                <Typography>Balance: {displayBalance}</Typography>
                             </Grid>
                             <Grid item>
                                 <AnimateButton>
