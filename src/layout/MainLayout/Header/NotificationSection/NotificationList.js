@@ -1,5 +1,6 @@
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
+
 import {
     Avatar,
     Button,
@@ -18,8 +19,10 @@ import {
 } from '@mui/material';
 
 // assets
-import { IconBrandTelegram, IconBuildingStore, IconMailbox, IconPhoto } from '@tabler/icons';
-import User1 from 'assets/images/users/user-round.svg';
+import { IconBrandTelegram, IconBuildingStore, IconSend, IconPhoto } from '@tabler/icons';
+// import User1 from 'assets/images/users/user-round.svg';
+
+import { useSelector } from 'react-redux';
 
 // styles
 const ListItemWrapper = styled('div')(({ theme }) => ({
@@ -37,6 +40,9 @@ const ListItemWrapper = styled('div')(({ theme }) => ({
 
 const NotificationList = () => {
     const theme = useTheme();
+
+    const event = useSelector((state) => state.event);
+    const account = useSelector((state) => state.account);
 
     const chipSX = {
         height: 24,
@@ -62,6 +68,37 @@ const NotificationList = () => {
         height: 28
     };
 
+    const listNotifications = event.notification.map((transfer, index) => {
+
+            return (
+                <>
+                    <ListItemWrapper>
+                        <ListItem alignItems="center">
+                            <ListItemAvatar>
+                                <Avatar
+                                    sx={{
+                                        color: theme.palette.primary.dark,
+                                        backgroundColor: theme.palette.primary.light,
+                                        border: 'none',
+                                        borderColor: theme.palette.primary.main
+                                    }}
+                                >
+                                    <IconSend stroke={1.5} size="1.3rem" />
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary={<Typography variant="subtitle1">New Transfer from {transfer._from}</Typography>} />
+                        </ListItem>
+                        <Grid container direction="column" className="list-container">
+                            <Grid item xs={12} sx={{ pb: 2 }}>
+                                <Typography variant="subtitle2">{transfer._from} sent you {transfer.amount} RTS</Typography>
+                            </Grid>
+                        </Grid>
+                    </ListItemWrapper>
+                    <Divider />
+                </>
+            );
+    });
+
     return (
         <List
             sx={{
@@ -83,39 +120,7 @@ const NotificationList = () => {
                 }
             }}
         >
-
-            <ListItemWrapper>
-                <ListItem alignItems="center">
-                    <ListItemAvatar>
-                        <Avatar
-                            sx={{
-                                color: theme.palette.primary.dark,
-                                backgroundColor: theme.palette.primary.light,
-                                border: 'none',
-                                borderColor: theme.palette.primary.main
-                            }}
-                        >
-                            <IconMailbox stroke={1.5} size="1.3rem" />
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary={<Typography variant="subtitle1">New Transfer</Typography>} />
-                    <ListItemSecondaryAction>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Typography variant="caption" display="block" gutterBottom>
-                                    2 min ago
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </ListItemSecondaryAction>
-                </ListItem>
-                <Grid container direction="column" className="list-container">
-                    <Grid item xs={12} sx={{ pb: 2 }}>
-                        <Typography variant="subtitle2">All done! Now check your inbox as you&apos;re in for a sweet treat!</Typography>
-                    </Grid>
-                </Grid>
-            </ListItemWrapper>
-            <Divider />
+            {listNotifications}
         </List>
     );
 };
