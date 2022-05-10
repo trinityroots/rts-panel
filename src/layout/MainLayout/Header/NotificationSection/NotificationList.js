@@ -69,6 +69,8 @@ const NotificationList = () => {
     };
 
     const listNotifications = event.notification.map((transfer, index) => {
+            let dateTime = new Date(transfer.time);
+            dateTime = dateTime.getDate()+"/"+(dateTime.getMonth()+1)+"/"+dateTime.getFullYear()+" "+dateTime.getHours()+":"+dateTime.getMinutes();
 
             return (
                 <>
@@ -86,7 +88,7 @@ const NotificationList = () => {
                                     <IconSend stroke={1.5} size="1.3rem" />
                                 </Avatar>
                             </ListItemAvatar>
-                            <ListItemText primary={<Typography variant="subtitle1">New Transfer from {transfer._from}</Typography>} />
+                            <ListItemText primary={<Typography variant="subtitle1">New Transfer: {dateTime}</Typography>} />
                         </ListItem>
                         <Grid container direction="column" className="list-container">
                             <Grid item xs={12} sx={{ pb: 2 }}>
