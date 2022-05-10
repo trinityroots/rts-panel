@@ -26,3 +26,4 @@ It will create a new branch gh-pages which will act as the deployment branch. Gi
 - Approve
 - Access Control
 - Supply Control
+- Real-time Activity Log and Notifications
