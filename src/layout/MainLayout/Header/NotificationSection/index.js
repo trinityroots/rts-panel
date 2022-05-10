@@ -4,7 +4,6 @@ import { tokenAbi } from 'store/constant';
 import { ethers } from "ethers";
 
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { SET_NEW_TRANSFER, SET_NEW_NOTIFICATION, CLEAR_ALL_NOTIFICATION } from 'store/actionsEvent';
 
@@ -25,7 +24,8 @@ import {
     Stack,
     TextField,
     Typography,
-    useMediaQuery
+    useMediaQuery,
+    Badge
 } from '@mui/material';
 
 // third-party
@@ -50,6 +50,7 @@ const NotificationSection = () => {
 
     const [newTransfer, setNewTransfer] = useState(event.transfer);
     const [tokenContract, setTokenContract] = useState(null);
+    const [invisible, setInvisible] = useState(true);
 
     const transferCallback = async (from, to, amount) => {
         const time = new Date().getTime();
@@ -98,6 +99,7 @@ const NotificationSection = () => {
         if (!(newTransfer instanceof Array)){
             if (newTransfer.to.toLowerCase() === account.accountAddress.toLowerCase()){
                 dispatch({ type: SET_NEW_NOTIFICATION, newTransfer });
+                handleBadgeVisibility();
             }
         } 
     }, [dispatch, newTransfer]);
@@ -127,6 +129,7 @@ const NotificationSection = () => {
     const handleToggle = () => {
         if (event.notification.length){
             setOpen((prevOpen) => !prevOpen);
+            setInvisible(true);
         }
     };
 
@@ -149,11 +152,15 @@ const NotificationSection = () => {
         if (event?.target.value) setValue(event?.target.value);
     };
 
+    const handleBadgeVisibility = () => {
+        setInvisible(!invisible);
+    };
+
     const clearNotification = () => {
         const emptyTransfer = [];
         dispatch({ type: CLEAR_ALL_NOTIFICATION, emptyTransfer });
         setOpen((prevOpen) => !prevOpen);
-    }
+    };
 
     return (
         <>
@@ -167,6 +174,12 @@ const NotificationSection = () => {
                 }}
             >
                 <ButtonBase sx={{ borderRadius: '12px' }}>
+                <Badge
+                    color="secondary" 
+                    badgeContent=" "
+                    variant="dot"
+                    invisible={invisible}
+                >
                     <Avatar
                         variant="rounded"
                         sx={{
@@ -188,6 +201,7 @@ const NotificationSection = () => {
                     >
                         <IconBell stroke={1.5} size="1.3rem" />
                     </Avatar>
+                </Badge>
                 </ButtonBase>
             </Box>
             <Popper

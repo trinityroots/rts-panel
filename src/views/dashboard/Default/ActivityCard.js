@@ -108,7 +108,7 @@ const ActivityCard = ({ isLoading }) => {
                                             color="secondary"
                                             onClick={clearActivity}
                                         >
-                                            Clear
+                                            Clear All
                                         </Typography>
                                     </Grid>
                                 </Grid>
