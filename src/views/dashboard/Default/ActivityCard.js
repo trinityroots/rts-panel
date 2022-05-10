@@ -33,6 +33,10 @@ const ActivityCard = ({ isLoading }) => {
             color = theme.palette.orange.dark;
             operation = 'Burn';
         }
+
+        if (transfer.from === '0x0000000000000000000000000000000000000000') {
+            operation = 'Mint';
+        }
         
         return (
             <>

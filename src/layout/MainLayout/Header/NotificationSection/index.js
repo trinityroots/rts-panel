@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { SET_NEW_TRANSFER } from 'store/actionsEvent';
+import { SET_NEW_TRANSFER, SET_NEW_NOTIFICATION, CLEAR_ALL_NOTIFICATION } from 'store/actionsEvent';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -38,22 +38,6 @@ import NotificationList from './NotificationList';
 
 // assets
 import { IconBell } from '@tabler/icons';
-
-// notification status options
-const status = [
-    {
-        value: 'all',
-        label: 'All Notification'
-    },
-    {
-        value: 'new',
-        label: 'New'
-    },
-    {
-        value: 'other',
-        label: 'Other'
-    }
-];
 
 // ==============================|| NOTIFICATION ||============================== //
 
@@ -111,6 +95,11 @@ const NotificationSection = () => {
 
     useEffect(() => {
         dispatch({ type: SET_NEW_TRANSFER, newTransfer });
+        if (!(newTransfer instanceof Array)){
+            if (newTransfer.to.toLowerCase() === account.accountAddress.toLowerCase()){
+                dispatch({ type: SET_NEW_NOTIFICATION, newTransfer });
+            }
+        } 
     }, [dispatch, newTransfer]);
     
     useEffect(() => {
@@ -136,7 +125,9 @@ const NotificationSection = () => {
     const anchorRef = useRef(null);
 
     const handleToggle = () => {
-        setOpen((prevOpen) => !prevOpen);
+        if (event.notification.length){
+            setOpen((prevOpen) => !prevOpen);
+        }
     };
 
     const handleClose = (event) => {
@@ -157,6 +148,12 @@ const NotificationSection = () => {
     const handleChange = (event) => {
         if (event?.target.value) setValue(event?.target.value);
     };
+
+    const clearNotification = () => {
+        const emptyTransfer = [];
+        dispatch({ type: CLEAR_ALL_NOTIFICATION, emptyTransfer });
+        setOpen((prevOpen) => !prevOpen);
+    }
 
     return (
         <>
@@ -225,7 +222,7 @@ const NotificationSection = () => {
                                                     </Stack>
                                                 </Grid>
                                                 <Grid item>
-                                                    <Typography component={Link} to="#" variant="subtitle2" color="primary">
+                                                    <Typography onClick={clearNotification} variant="subtitle2" color="primary">
                                                         Clear All
                                                     </Typography>
                                                 </Grid>
