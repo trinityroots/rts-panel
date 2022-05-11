@@ -3,6 +3,7 @@ export const gridSpacing = 3;
 export const drawerWidth = 260;
 export const appDrawerWidth = 320;
 export const tokenContractAddress = "0x25a5b89eDCA30932C833379E4ec482bD9523388c";
+export const networkId = "43113";
 export const tokenExplorer = "https://testnet.snowtrace.io/token/";
 export const addressExplorer = "https://testnet.snowtrace.io/address/";
 export const minterRole = "0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6";
