@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from "@mui/material";
 import { SET_ACCOUNT_ADDRESS, SET_ACCOUNT_BUTTON_TEXT } from 'store/actionsAccount';
+import { networkId } from 'store/constant';
 
 
 const ProfileSection = () => {
@@ -46,6 +47,10 @@ const ProfileSection = () => {
 
     //Connect Account Function
     async function connectAccount() {
+        if (window.ethereum.networkVersion !== networkId){
+            alert(`You must switch to the correct network! Network ID: ${networkId}`)
+            return false;
+        }
         const accounts = await window.ethereum.request({
             method: "eth_requestAccounts",
         });
@@ -62,9 +67,9 @@ const ProfileSection = () => {
             setAccountAddress( account );
         });
         //add event listener for network change
-        // window.ethereum.on('networkChanged', function (networkId) {
-        //     // Time to reload your interface with the new networkId
-        // })
+        window.ethereum.on('networkChanged', function (networkId) {
+            logout();
+        })
     }
 
     const logout = () => {
