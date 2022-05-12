@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
-import { InputLabel, OutlinedInput, FormControl, Button, Typography, Link } from '@mui/material'
+import { InputLabel, OutlinedInput, FormControl, Button, Typography, Link, FormControlLabel, FormGroup, Switch } from '@mui/material'
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // ==============================|| TYPOGRAPHY ||============================== //
@@ -100,7 +100,6 @@ const Transfer = () => {
                                             component="label"
                                             variant="contained"
                                             color="secondary"
-                                            // onClick={sendTransfer}
                                         >
                                             Batch
                                             <input
@@ -139,6 +138,15 @@ const Transfer = () => {
                                         value={transferAmount}
                                     />
                                 </FormControl>
+                            </Grid>
+                            <Grid item>
+                                <FormGroup>
+                                    <FormControlLabel control={<Switch   
+                                        // checked={checkedBurn}
+                                        // onChange={handleCheck}
+                                        color="secondary"/>
+                                    } label="Batch" />
+                                </FormGroup>
                             </Grid>
                             <Grid item>
                                 <AnimateButton>
