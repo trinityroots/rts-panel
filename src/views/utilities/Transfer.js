@@ -91,6 +91,28 @@ const Transfer = () => {
                         <Grid container direction="column" spacing={1}>
                             <Grid item>
                                 <FormControl fullWidth>
+                                    <AnimateButton>
+                                        <Button
+                                            disableElevation
+                                            fullWidth
+                                            size="large"
+                                            type="submit"
+                                            component="label"
+                                            variant="contained"
+                                            color="secondary"
+                                            // onClick={sendTransfer}
+                                        >
+                                            Batch
+                                            <input
+                                                type="file"
+                                                hidden
+                                            />
+                                        </Button>
+                                    </AnimateButton>
+                                </FormControl>
+                            </Grid>
+                            <Grid item>
+                                <FormControl fullWidth>
                                     <InputLabel htmlFor="outlined-adornment-transfer-account">Account Address</InputLabel>
                                     <OutlinedInput
                                         id="outlined-adornment-transfer-account"
