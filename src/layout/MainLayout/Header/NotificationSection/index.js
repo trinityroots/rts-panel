@@ -51,6 +51,8 @@ const NotificationSection = () => {
     const [newTransfer, setNewTransfer] = useState(event.transfer);
     const [tokenContract, setTokenContract] = useState(null);
     const [invisible, setInvisible] = useState(true);
+    const invisibleRef = useRef();
+    invisibleRef.current = invisible;
 
     const transferCallback = async (from, to, amount) => {
         const time = new Date().getTime();
@@ -99,7 +101,9 @@ const NotificationSection = () => {
         if (!(newTransfer instanceof Array)){
             if (newTransfer.to.toLowerCase() === account.accountAddress.toLowerCase()){
                 dispatch({ type: SET_NEW_NOTIFICATION, newTransfer });
-                handleBadgeVisibility();
+                if (invisibleRef.current) {
+                    handleBadgeVisibility();
+                }
             }
         } 
     }, [dispatch, newTransfer]);
@@ -174,7 +178,7 @@ const NotificationSection = () => {
             >
                 <ButtonBase sx={{ borderRadius: '12px' }}>
                 <Badge
-                    color="secondary" 
+                    color="primary" 
                     badgeContent=" "
                     variant="dot"
                     invisible={invisible}
@@ -185,11 +189,11 @@ const NotificationSection = () => {
                             ...theme.typography.commonAvatar,
                             ...theme.typography.mediumAvatar,
                             transition: 'all .2s ease-in-out',
-                            background: theme.palette.secondary.light,
-                            color: theme.palette.secondary.dark,
+                            background: theme.palette.dark.main,
+                            color: '#ffc107',
                             '&[aria-controls="menu-list-grow"],&:hover': {
-                                background: theme.palette.secondary.dark,
-                                color: theme.palette.secondary.light
+                                background: '#ffc107',
+                                color: theme.palette.dark.main
                             }
                         }}
                         ref={anchorRef}

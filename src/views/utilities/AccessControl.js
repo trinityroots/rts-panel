@@ -109,7 +109,7 @@ const AccessControl = () => {
                                     <FormControlLabel control={<Switch   
                                         checked={checkedRevoke}
                                         onChange={handleCheck}
-                                        color="secondary"/>
+                                        color="primary"/>
                                     } label="Revoke" />
                                 </FormGroup>
                             </Grid>

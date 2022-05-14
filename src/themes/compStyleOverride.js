@@ -1,5 +1,5 @@
 export default function componentStyleOverrides(theme) {
-    const bgColor = theme.colors?.grey50;
+    const bgColor = theme.colors?.darkPaper;
     return {
         MuiButton: {
             styleOverrides: {
@@ -105,10 +105,10 @@ export default function componentStyleOverrides(theme) {
                     background: bgColor,
                     borderRadius: `${theme?.customization?.borderRadius}px`,
                     '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: theme.colors?.grey400
+                        borderColor: theme.colors?.darkSecondaryMain
                     },
                     '&:hover $notchedOutline': {
-                        borderColor: theme.colors?.primaryLight
+                        borderColor: theme.colors?.darkSecondaryMain
                     },
                     '&.MuiInputBase-multiline': {
                         padding: 1

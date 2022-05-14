@@ -95,7 +95,7 @@ const ProfileSection = () => {
     return (
         <>
             <Button
-                color="secondary"
+                color="primary"
                 variant="outlined"
                 onClick={auth}
             >
