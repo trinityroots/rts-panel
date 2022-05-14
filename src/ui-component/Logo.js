@@ -12,7 +12,7 @@
 
 const Logo = () => {
 
-    const logo = "http://localhost:3000/rts-panel/rts.png"
+    const logo = "https://trinityroots.github.io/rts-panel/rts.png"
 
     return (
         /**
@@ -21,7 +21,7 @@ const Logo = () => {
          * <img src={logo} alt="Berry" width="100" />
          *
          */
-        <img src={logo} alt="RTS-DPANEL" width="150" />
+        <img src={logo} alt="RTS-DPANEL" width="125" />
         // <svg width="170" height="32" viewBox="0 0 170 32">
         // <defs>
         //     <linearGradient id="rainbow" x1="0" x2="0" y1="0" y2="100%" gradientUnits="userSpaceOnUse" >
