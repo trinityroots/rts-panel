@@ -12,7 +12,7 @@
 
 const Logo = () => {
 
-    const logo = "https://trinityroots.github.io/rts-panel/rts-panel.png"
+    const logo = "http://localhost:3000/rts-panel/rts.png"
 
     return (
         /**
@@ -21,7 +21,24 @@ const Logo = () => {
          * <img src={logo} alt="Berry" width="100" />
          *
          */
-        <img src={logo} alt="RTS-DPANEL" width="125" />
+        <img src={logo} alt="RTS-DPANEL" width="150" />
+        // <svg width="170" height="32" viewBox="0 0 170 32">
+        // <defs>
+        //     <linearGradient id="rainbow" x1="0" x2="0" y1="0" y2="100%" gradientUnits="userSpaceOnUse" >
+        //         <stop stop-color="#EAFC37" offset="0%"/>
+        //         <stop stop-color="#4FCB6B" offset="50%"/>
+        //         <stop stop-color="#7C4DFF" offset="100%"/> 
+        //     </linearGradient>
+        // </defs>
+        //     <text fill="url(#rainbow)">
+        //     <tspan 
+        //         font-size="25" 
+        //         x="0" 
+        //         y="30">
+        //         RTS dPANEL
+        //     </tspan>
+        //     </text>
+        // </svg>
     );
 };
 

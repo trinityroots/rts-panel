@@ -227,7 +227,7 @@ const Transfer = () => {
                                     <FormControlLabel control={<Switch   
                                         checked={checkedBatch}
                                         onChange={handleCheck}
-                                        color="secondary"/>
+                                        color="primary"/>
                                     } label="Batch" />
                                 </FormGroup>
                             </Grid>

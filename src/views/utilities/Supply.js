@@ -101,7 +101,7 @@ const Supply = () => {
                                     <FormControlLabel control={<Switch   
                                         checked={checkedBurn}
                                         onChange={handleCheck}
-                                        color="secondary"/>
+                                        color="primary"/>
                                     } label="Burn" />
                                 </FormGroup>
                             </Grid>

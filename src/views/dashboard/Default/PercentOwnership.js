@@ -16,11 +16,11 @@ import MainCard from 'ui-component/cards/MainCard';
 import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
-import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
+import PieChartIcon from '@mui/icons-material/PieChart';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-    backgroundColor: theme.palette.primary.dark,
+    backgroundColor: theme.palette.dark.main,
     color: theme.palette.primary.light,
     overflow: 'hidden',
     position: 'relative',
@@ -99,7 +99,7 @@ const PercentOwnership = ({ isLoading }) => {
                                             color: '#fff'
                                         }}
                                     >
-                                        <StorefrontTwoToneIcon fontSize="inherit" />
+                                        <PieChartIcon fontSize="inherit" />
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText
