@@ -183,14 +183,6 @@ const Transfer = () => {
                     {/* <SubCard title="Transfer"> */}
                         <Grid container direction="column" spacing={1}>
                             <Grid item>
-                                <input
-                                    type="file"
-                                    accept={".csv"}
-                                    onChange={handleFileUpload}
-                                    // hidden
-                                />
-                            </Grid>
-                            <Grid item>
                                 <FormControl fullWidth>
                                     <InputLabel htmlFor="outlined-adornment-transfer-account">Account Address</InputLabel>
                                     <OutlinedInput
@@ -221,6 +213,14 @@ const Transfer = () => {
                                         value={transferAmount}
                                     />
                                 </FormControl>
+                            </Grid>
+                            <Grid item>
+                                <input
+                                    type="file"
+                                    accept={".csv"}
+                                    onChange={handleFileUpload}
+                                    // hidden
+                                />
                             </Grid>
                             <Grid item>
                                 <FormGroup>
