@@ -112,7 +112,6 @@ const NotificationSection = () => {
 
     useEffect(() => {
         if ( account.accountAddress && tokenContract){
-            console.log( tokenContract.listeners( "Transfer" ) );
             tokenContract.on("Transfer", transferCallback);
         }
     }, [tokenContract]);
