@@ -62,7 +62,6 @@ const TransferFrom = () => {
     }
 
     const getAllowance = async () => {
-        console.log(fromAddress.length)
         if( account.accountAddress && fromAddress.length === 42 ) {
             const provider = new ethers.providers.Web3Provider( window.ethereum );
             const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, provider);
