@@ -207,7 +207,7 @@ const Transfer = () => {
                                     <Typography>Balance: {displayBalance} RTS <Link onClick={useMax}>Use Max</Link></Typography>
                             </Grid>
                             <Grid item>
-                                    <Typography>Allowance: {displayAllowance} RTS</Typography>
+                                    <Typography>Allowance: {displayAllowance} RTS (Batch Transfer)</Typography>
                             </Grid>
                             <Grid item>
                                 <FormControl fullWidth>
