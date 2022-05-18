@@ -48,6 +48,11 @@ const ProfileSection = () => {
     //Connect Account Function
     async function connectAccount() {
         if (window.ethereum.networkVersion !== networkId){
+            if (!window.ethereum.networkVersion) {
+                logout();
+                alert('Ensure that you are logged into MetaMask then try refreshing to page to sign in again');
+                return false;
+            }
             alert(`You must switch to the correct network! Network ID: ${networkId}`)
             return false;
         }
