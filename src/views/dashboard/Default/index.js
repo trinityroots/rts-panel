@@ -8,6 +8,7 @@ import YourBalance from './YourBalance';
 import TotalSupply from './TotalSupply';
 import PercentOwnership from './PercentOwnership';
 import ActivityCard from './ActivityCard';
+import RolesCard from './RolesCard';
 import { gridSpacing } from 'store/constant';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
@@ -35,8 +36,11 @@ const Dashboard = () => {
             </Grid>
             <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
-                    <Grid item xs={12} md={12}>
+                    <Grid item xs={12} md={7}>
                         <ActivityCard isLoading={isLoading} />
+                    </Grid>
+                    <Grid item xs={12} md={5}>
+                        <RolesCard isLoading={isLoading} />
                     </Grid>
                 </Grid>
             </Grid>

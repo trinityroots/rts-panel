@@ -1,6 +1,6 @@
 // import web3 stuff
-import { tokenContractAddress } from 'store/constant';
-import { tokenAbi } from 'store/constant';
+import { rbacTransparentContractAddress } from 'store/constant';
+import { rbacAbi } from 'store/constant';
 import { minterRole, burnerRole, adminRole } from 'store/constant';
 import { ethers } from "ethers";
 
@@ -41,7 +41,7 @@ const AccessControl = () => {
         if( account.accountAddress ) {
             const provider = new ethers.providers.Web3Provider( window.ethereum );
             const signer = provider.getSigner();
-            const tokenContract = new ethers.Contract( tokenContractAddress, tokenAbi, signer);
+            const rbacContract = new ethers.Contract( rbacTransparentContractAddress, rbacAbi, signer);
             let _role = '';
             if ( role === 'admin' ) {
                 _role = roleMap.admin;
@@ -53,12 +53,19 @@ const AccessControl = () => {
                 _role = roleMap.burner;
             }
             if ( checkedRevoke ) {
-                tokenContract.revokeRole(_role, receiverAddress)
+                if (receiverAddress.toLowerCase() === account.accountAddress.toLowerCase()){
+                    rbacContract.erc20RenounceRole(_role, receiverAddress)
                     .then(console.log)
                     .catch((err) => alert(err.data.message));
+                }else{
+                    rbacContract.erc20RevokeRole(_role, receiverAddress)
+                    .then(console.log)
+                    .catch((err) => alert(err.data.message));
+                }
+
             }
             else {
-                tokenContract.grantRole(_role, receiverAddress)
+                rbacContract.erc20GrantRole(_role, receiverAddress)
                     .then(console.log)
                     .catch((err) => alert(err.data.message));
             }
