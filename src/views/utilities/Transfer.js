@@ -24,6 +24,8 @@ const Transfer = () => {
     const [displayAllowance, setDisplayAllowance] = useState("-");
     const [checkedBatch, setCheckedBatch] = useState(false);
     const [fileArray, setFileArray] = useState([]);
+    const [transactionHash, setTransactionHash] = useState("");
+    const [showTransactionHash, setShowTransactionHash] = useState(false);
 
     const account = useSelector((state) => state.account);
     const event = useSelector((state) => state.event);
@@ -71,7 +73,9 @@ const Transfer = () => {
                     }
                     const batchTransfer = createBatchTransfer(fileArray);
                     batchContract.batchTransfer(batchTransfer)
-                        .then(console.log)
+                        .then((hash) => {
+                            setTransactionHash(hash.hash);
+                        }) 
                         .catch((err) => alert(err.data.message));
                 }
                 else {
@@ -86,7 +90,9 @@ const Transfer = () => {
                 }
                 const amount = ethers.utils.parseUnits(transferAmount, 18);
                 tokenContract.transfer(receiverAddress, amount)
-                    .then(console.log)
+                    .then((hash) => {
+                        setTransactionHash(hash.hash);
+                    })  
                     .catch((err) => alert(err.data.message));
             }
         }
@@ -175,11 +181,17 @@ const Transfer = () => {
         }
     }, [account.accountAddress, event.transfer]);
 
+    useEffect(() => {
+        if ( transactionHash.length ) {
+            setShowTransactionHash(true);
+        }
+    }, [transactionHash]);
+
     return (
         <MainCard title="Transfer RTS">
             <Grid container spacing={gridSpacing}>
-                <Grid item xs={0} sm={0} md={4} lg={4}/>
-                <Grid item xs={12} sm={12} md={4} lg={4}>
+                <Grid item xs={0} sm={0} md={3} lg={3}/>
+                <Grid item xs={12} sm={12} md={6} lg={6}>
                     {/* <SubCard title="Transfer"> */}
                         <Grid container direction="column" spacing={1}>
                             <Grid item>
@@ -246,10 +258,19 @@ const Transfer = () => {
                                     </Button>
                                 </AnimateButton>
                             </Grid>
+                            <Grid item>
+                                { showTransactionHash ? 
+                                    <>
+                                        <Typography>
+                                            Transaction Hash: {transactionHash}
+                                        </Typography>
+                                    </>
+                                    : null }
+                            </Grid>
                         </Grid>
                     {/* </SubCard> */}
                 </Grid>
-                <Grid item xs={0} sm={0} md={4} lg={4}/>
+                <Grid item xs={0} sm={0} md={3} lg={3}/>
             </Grid>
         </MainCard>
     );

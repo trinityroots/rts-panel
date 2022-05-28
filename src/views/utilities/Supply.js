@@ -68,8 +68,8 @@ const Supply = () => {
     return (
         <MainCard title="RTS Supply Control">
             <Grid container spacing={gridSpacing}>
-                <Grid item xs={0} sm={0} md={4} lg={4}/>
-                <Grid item xs={12} sm={12} md={4} lg={4}>
+                <Grid item xs={0} sm={0} md={3} lg={3}/>
+                <Grid item xs={12} sm={12} md={6} lg={6}>
                     {/* <SubCard title="Modify Supply"> */}
                         <Grid container direction="column" spacing={1}>
                             <Grid item>
@@ -123,7 +123,7 @@ const Supply = () => {
                         </Grid>
                     {/* </SubCard> */}
                 </Grid>
-                <Grid item xs={0} sm={0} md={4} lg={4}/>
+                <Grid item xs={0} sm={0} md={3} lg={3}/>
             </Grid>
         </MainCard>
     );
