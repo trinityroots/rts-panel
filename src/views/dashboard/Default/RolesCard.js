@@ -54,7 +54,7 @@ const RolesCard = ({ isLoading }) => {
                 <Grid item>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
+                            <Typography variant="subtitle2" color="inherit">
                                 {admin}
                             </Typography>
                         </Grid>
@@ -75,7 +75,7 @@ const RolesCard = ({ isLoading }) => {
                 <Grid item>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
+                            <Typography variant="subtitle2" color="inherit">
                                 {minter}
                             </Typography>
                         </Grid>
@@ -96,7 +96,7 @@ const RolesCard = ({ isLoading }) => {
                 <Grid item>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
+                            <Typography variant="subtitle2" color="inherit">
                                 {burner}
                             </Typography>
                         </Grid>
@@ -129,7 +129,7 @@ const RolesCard = ({ isLoading }) => {
                                         <Grid container alignItems="center" justifyContent="space-between">
                                             <Grid item>
                                                 <Typography variant="subtitle1" color="inherit">
-                                                    Admins
+                                                    Administrators
                                                 </Typography>
                                             </Grid>
                                         </Grid>
