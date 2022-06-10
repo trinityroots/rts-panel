@@ -27,6 +27,7 @@ const BurnCard = ({ isLoading }) => {
     const [burnAmount, setBurnAmount] = useState("");
     const account = useSelector((state) => state.account);
     const [transactionHash, setTransactionHash] = useState("");
+    const [shortTransactionHash, setShortTransactionHash] = useState("");
     const [showTransactionHash, setShowTransactionHash] = useState(false);
 
     const isFloat = (n) => {
@@ -67,9 +68,27 @@ const BurnCard = ({ isLoading }) => {
         setBurnAmount(event.target.value);
     }
 
+    const createShortTransactionHash = (transactionHash) => {
+        const text =
+            transactionHash.charAt(0) +
+            transactionHash.charAt(1) +
+            transactionHash.charAt(2) +
+            transactionHash.charAt(3) +
+            transactionHash.charAt(4) +
+            transactionHash.charAt(5) +
+            "..." +
+            transactionHash.charAt(transactionHash. length - 4) +
+            transactionHash.charAt(transactionHash. length - 3) +
+            transactionHash.charAt(transactionHash. length - 2) +
+            transactionHash.charAt(transactionHash. length - 1);
+        return text;
+    }
+
     useEffect(() => {
         if ( transactionHash.length ) {
             setShowTransactionHash(true);
+            const short = createShortTransactionHash(transactionHash);
+            setShortTransactionHash(short);
         }
     }, [transactionHash]);
 
@@ -120,7 +139,7 @@ const BurnCard = ({ isLoading }) => {
                                     <Grid item>
                                         { showTransactionHash ? 
                                             <>
-                                                Transaction Hash: <IconCopy onClick={copyHash} stroke={1.5} size="1.3rem" />
+                                                Transaction Hash: {shortTransactionHash} <IconCopy onClick={copyHash} stroke={1.5} size="1.3rem" />
                                             </>
                                             : null }
                                     </Grid>
