@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import { CardContent, InputLabel, OutlinedInput, FormControl, Button, Typography, Box, ButtonBase, Avatar } from '@mui/material'
 import AnimateButton from 'ui-component/extended/AnimateButton';
-import { IconCopy } from '@tabler/icons';
+import { IconCopy, IconFlame } from '@tabler/icons';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -25,6 +25,7 @@ import { gridSpacing } from 'store/constant';
 
 const BurnCard = ({ isLoading }) => {
     const [burnAmount, setBurnAmount] = useState("");
+    const [burningAmount, setBurningAmount] = useState("-");
     const account = useSelector((state) => state.account);
     const [transactionHash, setTransactionHash] = useState("");
     const [shortTransactionHash, setShortTransactionHash] = useState("");
@@ -36,7 +37,7 @@ const BurnCard = ({ isLoading }) => {
 
     const copyHash = () => {
         navigator.clipboard.writeText(transactionHash).then(function() {
-            alert('Copying to clipboard was successful!');
+            alert('Copied transaction hash to clipboard!');
           }, function(err) {
             alert('Could not copy text: ', err);
         });
@@ -52,6 +53,8 @@ const BurnCard = ({ isLoading }) => {
                 return false;
             }
             const amount = ethers.utils.parseUnits(burnAmount, 18);
+            setBurningAmount(burnAmount);
+            setBurnAmount("");
             tokenContract.burn(amount)
                 .then((hash) => {
                     setTransactionHash(hash.hash);
@@ -117,6 +120,7 @@ const BurnCard = ({ isLoading }) => {
                                                 type="string"
                                                 name="burn-token-amount"
                                                 label="Amount"
+                                                value={burnAmount}
                                                 onChange={handleAmountChange}
                                             />
                                         </FormControl>
@@ -132,11 +136,12 @@ const BurnCard = ({ isLoading }) => {
                                                 color="secondary"
                                                 onClick={burnToken}
                                             >
-                                                Burn
+                                                Burn <IconFlame></IconFlame>
                                             </Button>
                                         </AnimateButton>
                                     </Grid>
                                     <Grid item>
+                                        <Typography>Burning Amount: {burningAmount} RTS</Typography>
                                         { showTransactionHash ? 
                                             <>
                                                 Transaction Hash: {shortTransactionHash} <IconCopy onClick={copyHash} stroke={1.5} size="1.3rem" />
