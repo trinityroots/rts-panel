@@ -3,7 +3,7 @@ const config = {
     // like '/berry-material-react/react/default'
     basename: '/rts-panel',
     defaultPath: '/dashboard/default',
-    fontFamily: `'Roboto', sans-serif`,
+    fontFamily: `'DM Mono',monospace`,
     borderRadius: 12
 };
 
