@@ -36,7 +36,7 @@ const ProfileSection = () => {
             dispatch({ type: SET_ACCOUNT_BUTTON_TEXT, buttonText });
         } 
         else {
-            const buttonText = 'Sign In';
+            const buttonText = 'Connect';
             dispatch({ type: SET_ACCOUNT_BUTTON_TEXT, buttonText });
         }
     }, [dispatch, accountAddress]);
