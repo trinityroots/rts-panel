@@ -46,7 +46,7 @@ const ProfileSection = () => {
         const accounts = await window.ethereum.request({
             method: "eth_requestAccounts",
         });
-        if (!accounts.length) {
+        if (!accounts) {
             logout();
         }
     }, []);
