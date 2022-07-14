@@ -41,6 +41,16 @@ const ProfileSection = () => {
         }
     }, [dispatch, accountAddress]);
 
+    useEffect(async () => {
+        console.log('Checking if logged out...')
+        const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+        });
+        if (!accounts.length) {
+            logout();
+        }
+    }, []);
+
     useEffect(() => {
         setConnectButtonText(account.accountButtonText);
     }, [account.accountButtonText])
@@ -66,10 +76,19 @@ const ProfileSection = () => {
 
         //add event listener for account change
         window.ethereum.on('accountsChanged', function (accounts) {
-            const account = accounts[0];
-            const buttonText = createButtonText(account);
-            setConnectButtonText( buttonText );
-            setAccountAddress( account );
+            let account;
+            if (accounts.length) {
+                const account = accounts[0];
+            }
+
+            if (!account) {
+                logout();
+            }
+            else {
+                const buttonText = createButtonText(account);
+                setConnectButtonText( buttonText );
+                setAccountAddress( account );
+            }
         });
         //add event listener for network change
         window.ethereum.on('networkChanged', function (networkId) {
