@@ -27,3 +27,14 @@ It will create a new branch gh-pages which will act as the deployment branch. Gi
 - Access Control
 - Supply Control
 - Real-time Activity Log and Notifications
+
+## Maintenance
+
+GH Pages gives you 404 when accessing the page
+
+Solution:
+```bash
+git checkout gh-pages
+git commit --allow-empty -m "Updates"
+git push origin gh-pages
+```
